@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TADS - Prova DSW</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+        .titulo { color: green; }
+    </style>
+</head>
+<body>
+<div>
+  <h1 class="titulo">TADS - Prova DSW - Séries</h1>
+  <ul id="resultado"></ul>
+</div>
+<script>
+        function montarHtml(dados) {
+            return '<li>' +
+                '<h3>' + dados.titulo + '</h3>' +
+                '<p>Gênero: ' + dados.genero + '</p>' +
+                '<p>Ano de lançamento: ' + dados.anoLancamento + '</p>' +
+                '</li>';
+        }
+
+        async function listar() {
+            try {
+                const response = await fetch('/serie'); // Rota correta para obter os dados da API
+                if (response.ok) {
+                    const dados = await response.json();
+                    for (let i = 0; i < dados.length; i++) {
+                        const dadosHtml = montarHtml(dados[i]);
+                        document.getElementById('resultado').insertAdjacentHTML('beforeend', dadosHtml);
+                    }
+                } else {
+                    throw new Error('Erro ao carregar dados');
+                }
+            } catch (err) {
+                alert('ERRO: ' + err.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            listar();
+        });
+    </script>
+</body>
+</html>
